@@ -1,12 +1,12 @@
 {
   "canisters": {
-    "ic_whiskers_dapp": {
-      "main": "src/ic_whiskers_dapp/main.mo",
+    "ito": {
+      "main": "src/ic_whiskers_dapp/ito.mo",
       "type": "motoko"
     },
     "ic_whiskers_dapp_assets": {
       "dependencies": [
-        "ic_whiskers_dapp"
+        "ito"
       ],
       "frontend": {
         "entrypoint": "src/ic_whiskers_dapp_assets/src/index.html"
@@ -21,7 +21,7 @@
   "defaults": {
     "build": {
       "args": "",
-      "packtool": ""
+      "packtool": "vessel sources"
     }
   },
   "dfx": "0.8.4",
