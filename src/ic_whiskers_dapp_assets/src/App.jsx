@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { Home, Mint, Marketplace } from "./pages";
+import { Home, Mint, Marketplace, LargeNft } from "./pages";
 import { SideBar, TopNav } from "./components/index";
 import {
   Box,
@@ -43,6 +43,7 @@ const App = () => {
             <Route path="/" element={<Home />} />
             <Route path="/mint" element={<Mint />} />
             <Route path="/marketplace" element={<Marketplace />} />
+            <Route path="/marketplace/nft/:tokenid" element={<LargeNft />} />
           </Routes>
         </Box>
       </Box>

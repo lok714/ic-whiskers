@@ -36,7 +36,12 @@ const SideBar = ({ onClose, ...rest }) => {
         <CloseButton display={{ base: "flex", md: "none" }} onClick={onClose} />
       </Flex>
       {LinkItems.map((link) => (
-        <NavItem key={link.name} icon={link.icon} link={link.link} onClose={onClose}>
+        <NavItem
+          key={link.name}
+          icon={link.icon}
+          link={link.link}
+          onClose={onClose}
+        >
           {link.name}
         </NavItem>
       ))}
@@ -57,10 +62,10 @@ const NavItem = ({ icon, children, link, onClose }) => {
           cursor="pointer"
           fontWeight={600}
           _hover={{
-            bg: "#ec63d6",
+            bg: "pink.500",
             color: "white",
           }}
-          bg={isActive ? "#ec63d6" : null}
+          bg={isActive ? "pink.500" : null}
           color={isActive ? "white" : null}
         >
           <Icon
