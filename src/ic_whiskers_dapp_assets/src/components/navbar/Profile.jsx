@@ -14,9 +14,7 @@ import {
   Icon,
   useClipboard,
 } from "@chakra-ui/react";
-import { FiChevronDown } from "react-icons/fi";
 import { FaDiscord } from "react-icons/fa";
-import { IoIosImages } from "react-icons/io";
 import { CopyIcon, LockIcon } from "@chakra-ui/icons";
 import IcLogo from "../../../assets/ic-logo.png";
 import {
@@ -81,7 +79,6 @@ const Profile = () => {
                     </MenuItem>
                   </Tooltip>
                 </Hide>
-                <MenuItem icon={<IoIosImages />}>My NFTs</MenuItem>
                 <MenuDivider />
                 <MenuItem
                   icon={<LockIcon />}

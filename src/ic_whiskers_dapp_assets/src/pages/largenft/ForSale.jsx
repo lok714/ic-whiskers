@@ -1,7 +1,6 @@
 import React from "react";
 import {
   Button,
-  useColorModeValue,
   Heading,
   Text,
   Container,
@@ -24,7 +23,10 @@ import {
 } from "@chakra-ui/react";
 import IcLogo from "../../../assets/ic-logo.png";
 import { MdOutlineAccountBalanceWallet } from "react-icons/md";
-import { useAnvilSelector, nft_purchase } from "@vvv-interactive/nftanvil-react";
+import {
+  useAnvilSelector,
+  nft_purchase,
+} from "@vvv-interactive/nftanvil-react";
 import { useNavigate } from "react-router-dom";
 import {
   SendingToast,
@@ -37,15 +39,10 @@ import {
 } from "@vvv-interactive/nftanvil-tools/cjs/accountidentifier.js";
 import { useAnvilDispatch } from "@vvv-interactive/nftanvil-react";
 
-const ForSale = ({ Icp, tokenId }) => {
+const ForSale = ({ Icp, tokenId, setConfetti }) => {
   return (
-    <Flex bg={useColorModeValue("gray.50", "gray.800")} rounded={"lg"}>
-      <Container
-        bg={useColorModeValue("white", "whiteAlpha.100")}
-        boxShadow={"xl"}
-        rounded={"lg"}
-        p={4}
-      >
+    <Flex bg={"gray.50"} rounded={"lg"}>
+      <Container bg={"white"} boxShadow={"xl"} rounded={"lg"} p={4}>
         <Text
           fontWeight={600}
           fontSize={{ base: "md", md: "lg" }}
@@ -66,14 +63,10 @@ const ForSale = ({ Icp, tokenId }) => {
               </Tooltip>
               &nbsp;
               {e8sToIcp(Icp)}
-              &nbsp;
-              <Text color={"#b2b8be"} fontSize="md">
-                ($x.xx)
-              </Text>
             </Flex>
           </Heading>
           <Spacer />
-          <BuyButton tokenId={tokenId} price={Icp} />
+          <BuyButton tokenId={tokenId} price={Icp} setConfetti={setConfetti} />
         </HStack>
       </Container>
     </Flex>
@@ -82,7 +75,7 @@ const ForSale = ({ Icp, tokenId }) => {
 
 const toast = createStandaloneToast();
 
-const BuyButton = ({ tokenId, price }) => {
+const BuyButton = ({ tokenId, price, setConfetti }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const address = useAnvilSelector((state) => state.user.address);
   const dispatch = useAnvilDispatch();
@@ -98,7 +91,7 @@ const BuyButton = ({ tokenId, price }) => {
       affiliate: [
         {
           address: TextToArray(
-            "a006b7308ff262c78c50b3a20059229d30b818034a9f5186eec8e93a1dc15f77"
+            "a00dcee3d64e4daaa34ebfa7b95fba5f095e234d32a4770958e3f8e8818cafe1"
           ),
           amount: 100000,
         },
@@ -112,19 +105,11 @@ const BuyButton = ({ tokenId, price }) => {
       SuccessToast(
         "Success",
         `${
-          tokenToText(tokenId).substring(0, 6) +
-          "..." +
-          tokenToText(tokenId).substring(15, 20)
+          tokenId.substring(0, 6) + "..." + tokenId.substring(15, 20)
         } bought for ${e8sToIcp(price)} ICP`
       );
 
-      return navigate("marketplace/nft/" + tokenToText(tokenId), {
-        state: {
-          prev: "/marketplace",
-          showConfetti: true,
-          totalNfts: 1,
-        },
-      });
+      return setConfetti();
     } catch (e) {
       console.log(e);
       toast.closeAll();
@@ -183,10 +168,6 @@ const BuyButton = ({ tokenId, price }) => {
               </Tooltip>
               &nbsp;
               {e8sToIcp(price)}
-              &nbsp;
-              <Text color={"#b2b8be"} fontSize="md">
-                ($x.xx)
-              </Text>
             </Flex>
           </ModalBody>
 

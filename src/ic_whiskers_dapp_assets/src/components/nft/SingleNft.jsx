@@ -27,7 +27,7 @@ import icLogo from "../../../assets/ic-logo.png";
 import { Image as ChakraImage } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 
-const SingleNft = ({ tokenId }) => {
+const SingleNft = ({ tokenId, isMarketplace }) => {
   let isMounted = true;
   const map = useAnvilSelector((state) => state.user.map);
   const dispatch = useAnvilDispatch();
@@ -81,7 +81,7 @@ const SingleNft = ({ tokenId }) => {
       to={"/marketplace/nft/" + token}
       state={{
         prev: "/marketplace",
-        showConfetti: true,
+        showConfetti: false,
         totalNfts: 1,
       }}
     >

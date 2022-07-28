@@ -12,13 +12,14 @@ import {
 import { useAnvilSelector } from "@vvv-interactive/nftanvil-react";
 
 const App = () => {
-  // const loaded = useAnvilSelector((state) => state.user.map.history);
-  // if (!loaded) return null; // change to a loading icon
-
+  const loaded = useAnvilSelector((state) => state.user.map.history);
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+  if (!loaded) return null; // change to a loading icon
+
   return (
     <Router>
-      <Box minH="100vh" bg={useColorModeValue("gray.100", "gray.900")}>
+      <Box minH="100vh">
         <SideBar
           onClose={() => onClose}
           display={{ base: "none", md: "block" }}

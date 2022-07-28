@@ -8,7 +8,6 @@ import {
   Heading,
   Stack,
   Text,
-  useColorModeValue,
   HStack,
   Skeleton,
   Box,
@@ -26,12 +25,14 @@ import {
 import { useParams } from "react-router-dom";
 import { itemQuality } from "@vvv-interactive/nftanvil-tools/cjs/items.js";
 import { Link, useLocation } from "react-router-dom";
-import { Confetti } from "../components";
+import { Confetti } from "../../components";
 import ForSale from "./ForSale";
+import Owned from "./Owned";
 
 const LargeNft = () => {
   const params = useParams();
   const path = useLocation();
+  const address = useAnvilSelector((state) => state.user.address);
 
   const map = useAnvilSelector((state) => state.user.map);
   const dispatch = useAnvilDispatch();
@@ -39,6 +40,7 @@ const LargeNft = () => {
 
   const [data, setData] = useState({});
   const [src, setSrc] = useState();
+  const [showConfetti, setShowConfetti] = useState(false);
 
   const [pathData, setPathData] = useState({
     prevPath: "/",
@@ -71,16 +73,27 @@ const LargeNft = () => {
     setLoaded(true);
   };
 
+  const setConfetti = () => {
+    setShowConfetti(true);
+  };
+
   useEffect(() => {
     load();
     window.scrollTo(0, 0);
+    const interval = setInterval(() => {
+      load();
+    }, 3000);
+    return () => {
+      clearInterval(interval);
+    };
   }, []);
 
   if (!Loaded) return <p>Loading...</p>;
   return (
     <>
-      <Center px={5}>
-        {/* {pathData.showConfetti ? <Confetti /> : null} */}
+      <Center px={5} mb={5}>
+        {pathData.showConfetti ? <Confetti /> : null}
+        {showConfetti ? <Confetti /> : null}
         <Stack
           height={{ sm: "476px", md: "50vw", lg: "38vw" }}
           maxH="650px"
@@ -103,8 +116,38 @@ const LargeNft = () => {
             justifyContent="center"
             alignItems="start"
             p={{ sm: 5, md: 8 }}
-            pt={2}
+            py={2}
           >
+            <HStack>
+              <Link to={pathData.prevPath}>
+                <Button
+                  border={"2px"}
+                  borderColor={"#e5e8eb"}
+                  boxShadow="base"
+                  bg={"white"}
+                  size="sm"
+                  _hover={{ opacity: "0.8" }}
+                >
+                  <Text as="kbd">Go Back</Text>
+                </Button>
+              </Link>
+              {pathData.amount > 1 ? (
+                <Link to="/marketplace">
+                  <Button
+                    border={"2px"}
+                    borderColor={"#e5e8eb"}
+                    boxShadow="base"
+                    bg={"white"}
+                    size="sm"
+                    _hover={{ opacity: "0.8" }}
+                  >
+                    <Text as="kbd">
+                      {"+ " + (pathData.amount - 1) + " other NFTs"}
+                    </Text>
+                  </Button>
+                </Link>
+              ) : null}
+            </HStack>
             <Box bg={"white"} boxShadow={"xl"} rounded={"lg"} p={4}>
               <Heading
                 color={data.color}
@@ -152,44 +195,15 @@ const LargeNft = () => {
               </Text>
             </Box>
             {data.price > 0 ? (
-              <ForSale Icp={data.price} tokenId={data.id} />
+              <ForSale
+                Icp={data.price}
+                tokenId={data.id}
+                setConfetti={setConfetti}
+              />
             ) : null}
+            {address ? <Owned tokenId={data.id} /> : null}
           </Stack>
         </Stack>
-      </Center>
-      <Center>
-        <HStack>
-          <Link to={pathData.prevPath}>
-            <Button
-              border={"2px"}
-              borderColor={"#e5e8eb"}
-              boxShadow="base"
-              bg={"white"}
-              my={5}
-              size="sm"
-              _hover={{ opacity: "0.8" }}
-            >
-              <Text as="kbd">Go Back</Text>
-            </Button>
-          </Link>
-          {pathData.amount > 1 ? (
-            <Link to="/inventory">
-              <Button
-                border={"2px"}
-                borderColor={"#e5e8eb"}
-                boxShadow="base"
-                bg={"white"}
-                my={5}
-                size="sm"
-                _hover={{ opacity: "0.8" }}
-              >
-                <Text as="kbd">
-                  {"+ " + (pathData.amount - 1) + " other NFTs"}
-                </Text>
-              </Button>
-            </Link>
-          ) : null}
-        </HStack>
       </Center>
     </>
   );

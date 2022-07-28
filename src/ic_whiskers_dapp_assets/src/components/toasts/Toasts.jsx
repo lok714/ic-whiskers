@@ -4,23 +4,23 @@ import React from "react";
 const toast = createStandaloneToast();
 
 export const CopyToast = () => {
-    return toast({
-      title: `Address Copied`,
-      status: "info",
-      isClosable: true,
-      position: "bottom-right",
-      duration: 1000,
-    });
+  return toast({
+    title: `Address Copied`,
+    status: "info",
+    isClosable: true,
+    position: "bottom-right",
+    duration: 1000,
+  });
 };
 
 export const FailedToast = (msg, err) => {
   return toast({
-      title: msg,
-      description: err,
-      status: "error",
-      isClosable: true,
-      position: "bottom-right",
-    });
+    title: msg,
+    description: err,
+    status: "error",
+    isClosable: true,
+    position: "bottom-right",
+  });
 };
 
 export const SendingToast = (msg) => {
@@ -38,10 +38,23 @@ export const SendingToast = (msg) => {
 
 export const SuccessToast = (msg, desc) => {
   return toast({
-      title: msg,
-      description: desc,
-      status: "success",
-      isClosable: true,
-      position: "bottom-right",
-    });
-}
+    title: msg,
+    description: desc,
+    status: "success",
+    isClosable: true,
+    position: "bottom-right",
+  });
+};
+
+export const SuccessICPToast = (amount, to) => {
+  return toast({
+    title: "Success",
+    description: `${amount} sent to ${to.substring(0, 5)}...${to.substring(
+      60,
+      64
+    )}`,
+    status: "success",
+    isClosable: true,
+    position: "bottom-right",
+  });
+};

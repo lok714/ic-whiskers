@@ -14,20 +14,32 @@ import {
   Spacer,
   Container,
   useColorModeValue,
+  FormControl,
+  Switch,
+  FormLabel,
+  useBreakpointValue,
 } from "@chakra-ui/react";
 import { SingleNft } from "../../components/";
 import { FailedToast } from "../../components/toasts/Toasts";
+import { Claim, GetMine } from "../../components/index";
+import {
+  useAnvilDispatch,
+  useAnvilSelector,
+} from "@vvv-interactive/nftanvil-react";
 
 const address =
   "a004f41ea1a46f5b7e9e9639fbed84e037d9ce66b75d392d2c1640bb7a559cda"; // this is badbot address
 
 const Marketplace = () => {
+  const anvilDispatch = useAnvilDispatch();
   const [Loaded, setLoaded] = useState(false);
   const [tokensForSale, setTokensForSale] = useState([]);
   const [author, setAuthor] = useState({});
   const [sortBy, setSort] = useState("All");
   const [page, setPage] = useState(0);
   const [pricingFilter, setPricingFilter] = useState("Low to High");
+  const [owned, setOwned] = useState(false);
+  const [isMarketplace, setIsMarketplace] = useState(true);
 
   // author fetch - only runs if author changes
   const fetchAuthorData = async () => {
@@ -101,6 +113,20 @@ const Marketplace = () => {
   // sort nfts accordingly - prices are retrieved from NFT meta data
   const LoadSale = async () => {
     if (Loaded) {
+      if (owned) {
+        setIsMarketplace(false);
+
+        const tokens = await anvilDispatch(GetMine());
+        if (sortBy === "0") {
+          return setTokensForSale(tokens.slice(page * 12, (page + 1) * 12));
+        } else {
+          let filtered = await sortRarity(tokens, getNumFromRarity(sortBy));
+          return setTokensForSale(filtered.slice(page * 12, (page + 1) * 12));
+        }
+      }
+
+      setIsMarketplace(true);
+
       let forSale = [];
 
       let prices = author.prices;
@@ -127,11 +153,12 @@ const Marketplace = () => {
 
   useEffect(() => {
     LoadSale();
-  }, [page, sortBy, pricingFilter, Loaded]);
+  }, [page, sortBy, pricingFilter, Loaded, owned]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
     fetchAuthorData();
+    anvilDispatch(Claim());
   }, []);
 
   return (
@@ -141,6 +168,8 @@ const Marketplace = () => {
         setPricingFilter={setPricingFilter}
         sortBy={sortBy}
         setSort={setSort}
+        owned={owned}
+        setOwned={setOwned}
       />
       {Loaded ? (
         <>
@@ -160,7 +189,11 @@ const Marketplace = () => {
               maxW="1250px"
             >
               {tokensForSale.map((item) => (
-                <SingleNft tokenId={item} key={item} />
+                <SingleNft
+                  tokenId={item}
+                  key={item}
+                  isMarketplace={isMarketplace}
+                />
               ))}
             </SimpleGrid>
           </Center>
@@ -185,6 +218,8 @@ const FilteringOptions = ({
   setPricingFilter,
   sortBy,
   setSort,
+  owned,
+  setOwned,
 }) => {
   return (
     <Container maxWidth="1250px">
@@ -194,7 +229,9 @@ const FilteringOptions = ({
         <LtoH
           pricingFilter={pricingFilter}
           setPricingFilter={setPricingFilter}
+          owned={owned}
         />
+        <MyNfts owned={owned} setOwned={setOwned} />
       </Flex>
     </Container>
   );
@@ -250,7 +287,7 @@ const RarityFilter = ({ sortBy, setSort }) => {
   );
 };
 
-const LtoH = ({ pricingFilter, setPricingFilter }) => {
+const LtoH = ({ pricingFilter, setPricingFilter, owned }) => {
   return (
     <Menu>
       <MenuButton
@@ -260,6 +297,7 @@ const LtoH = ({ pricingFilter, setPricingFilter }) => {
         as={Button}
         boxShadow="base"
         bg={useColorModeValue("white", "whiteAlpha.100")}
+        isDisabled={owned}
       >
         {pricingFilter}
       </MenuButton>
@@ -292,6 +330,7 @@ const PaginationButtons = ({ setPage, page, tokensLength }) => {
       position={"relative"}
     >
       <Button
+        size={useBreakpointValue(["sm", "md"])}
         border={"2px"}
         borderColor={"#e5e8eb"}
         boxShadow="base"
@@ -305,6 +344,7 @@ const PaginationButtons = ({ setPage, page, tokensLength }) => {
         Prev Page
       </Button>
       <Button
+        size={useBreakpointValue(["sm", "md"])}
         border={"2px"}
         borderColor={"#e5e8eb"}
         boxShadow="base"
@@ -322,4 +362,23 @@ const PaginationButtons = ({ setPage, page, tokensLength }) => {
   );
 };
 
+export const MyNfts = ({ owned, setOwned }) => {
+  const address = useAnvilSelector((state) => state.user.address);
+
+  return (
+    <Box ms={2}>
+      <FormControl align="center" m={0} p={0}>
+        <Switch
+          size={"md"}
+          colorScheme="cyan"
+          onChange={() => setOwned(!owned)}
+          isDisabled={address ? false : true}
+        />
+        <FormLabel m={0} fontSize={["6pt", null, "sm"]} color={"gray.500"}>
+          Owned
+        </FormLabel>
+      </FormControl>
+    </Box>
+  );
+};
 export default Marketplace;
