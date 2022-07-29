@@ -4,7 +4,6 @@ import {
   HStack,
   Menu,
   MenuButton,
-  MenuDivider,
   MenuItem,
   MenuList,
   Button,
@@ -79,7 +78,6 @@ const Profile = () => {
                     </MenuItem>
                   </Tooltip>
                 </Hide>
-                <MenuDivider />
                 <MenuItem
                   icon={<LockIcon />}
                   onClick={() => anvilDispatch(user_logout())}

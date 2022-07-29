@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Home, Mint, Marketplace, LargeNft } from "./pages";
 import { SideBar, TopNav } from "./components/index";
@@ -12,10 +12,10 @@ import {
 import { useAnvilSelector } from "@vvv-interactive/nftanvil-react";
 
 const App = () => {
-  const loaded = useAnvilSelector((state) => state.user.map.history);
+  // const loaded = useAnvilSelector((state) => state.user.map.history);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  if (!loaded) return null; // change to a loading icon
+  // if (!loaded) return null; // change to a loading icon
 
   return (
     <Router>
