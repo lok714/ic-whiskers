@@ -19,12 +19,18 @@ const Claim = () => async (dispatch, getState) => {
   if (owned.err) throw new Error(owned.err);
 
   let tokens = owned.ok.tokens.filter(Boolean);
-
-  let claimed = await Promise.all(
-    tokens.map((tid) => {
-      return ito.claim(address, subaccount, tid);
-    })
-  );
+  // console.log(Number(tokens))
+  if (tokens) {
+    try {
+      let claimed = await Promise.all(
+        tokens.map((tid) => {
+          return ito.claim(address, subaccount, tid);
+        })
+      );
+    } catch (e) {
+      return;
+    }
+  }
 
   // console.log(tokens, claimed);
 };

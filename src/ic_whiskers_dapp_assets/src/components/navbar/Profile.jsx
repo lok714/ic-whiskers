@@ -12,8 +12,11 @@ import {
   Tooltip,
   Icon,
   useClipboard,
+  MenuDivider,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { FaDiscord } from "react-icons/fa";
+import { RiSendPlaneFill } from "react-icons/ri";
 import { CopyIcon, LockIcon } from "@chakra-ui/icons";
 import IcLogo from "../../../assets/ic-logo.png";
 import {
@@ -24,6 +27,7 @@ import {
 } from "@vvv-interactive/nftanvil-react";
 import { e8sToIcp } from "@vvv-interactive/nftanvil-tools/cjs/accountidentifier.js";
 import { CopyToast } from "../toasts/Toasts";
+import SendingIcp from "./SendingIcp";
 
 // use authentication system and update react redux with it
 
@@ -32,6 +36,7 @@ const Profile = () => {
   const user_icp = e8sToIcp(useAnvilSelector((state) => state.user.icp));
   const anvilDispatch = useAnvilDispatch();
   const { onCopy } = useClipboard(address);
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const copyAddress = () => {
     onCopy();
@@ -78,6 +83,20 @@ const Profile = () => {
                     </MenuItem>
                   </Tooltip>
                 </Hide>
+                <MenuItem
+                  icon={<RiSendPlaneFill />}
+                  command={user_icp}
+                  closeOnSelect
+                  onClick={onOpen}
+                >
+                  Transfer ICP
+                  <SendingIcp
+                    onClose={onClose}
+                    isOpen={isOpen}
+                    user_icp={user_icp}
+                  />
+                </MenuItem>
+                <MenuDivider />
                 <MenuItem
                   icon={<LockIcon />}
                   onClick={() => anvilDispatch(user_logout())}

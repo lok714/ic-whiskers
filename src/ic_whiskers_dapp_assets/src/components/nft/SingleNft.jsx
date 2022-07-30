@@ -58,7 +58,9 @@ const SingleNft = ({ tokenId, isMarketplace }) => {
   };
 
   const loadImg = async () => {
-    let src = await tokenUrl(map.space, tokenId, "thumb");
+    let src;
+    src = await tokenUrl(map.space, tokenId, "thumb");
+
     if (isMounted) {
       setImg(src);
     }

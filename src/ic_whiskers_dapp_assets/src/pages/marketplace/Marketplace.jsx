@@ -18,17 +18,22 @@ import {
   Switch,
   FormLabel,
   useBreakpointValue,
+  Kbd,
+  Text,
 } from "@chakra-ui/react";
 import { SingleNft } from "../../components/";
 import { FailedToast } from "../../components/toasts/Toasts";
-import { Claim, GetMine } from "../../components/index";
+import { GetMine, Claim } from "../../components/index";
 import {
   useAnvilDispatch,
   useAnvilSelector,
 } from "@vvv-interactive/nftanvil-react";
 
+// const address =
+//   "a004f41ea1a46f5b7e9e9639fbed84e037d9ce66b75d392d2c1640bb7a559cda"; // this is badbot address
+
 const address =
-  "a004f41ea1a46f5b7e9e9639fbed84e037d9ce66b75d392d2c1640bb7a559cda"; // this is badbot address
+  "a00bdc022680e6769e088e7203e14280334b54a680e4eb3855c1a656960c6d27"; // IC whiskers address
 
 const Marketplace = () => {
   const anvilDispatch = useAnvilDispatch();
@@ -181,21 +186,34 @@ const Marketplace = () => {
             />
           </Center>
           <Center mt={1}>
-            <SimpleGrid
-              columns={{ base: 2, md: 2, lg: 4 }}
-              pb={5}
-              gap={2}
-              mx={2}
-              maxW="1250px"
-            >
-              {tokensForSale.map((item) => (
-                <SingleNft
-                  tokenId={item}
-                  key={item}
-                  isMarketplace={isMarketplace}
-                />
-              ))}
-            </SimpleGrid>
+            {isMarketplace ? (
+              <Kbd
+                my={"195px"}
+                border={"2px"}
+                borderColor={"#e5e8eb"}
+                as={Button}
+                boxShadow="base"
+                bg={useColorModeValue("white", "whiteAlpha.100")}
+              >
+                <Text color="#000">Marketplace opening soon!🚀 🛍</Text>
+              </Kbd>
+            ) : (
+              <SimpleGrid
+                columns={{ base: 2, md: 2, lg: 4 }}
+                pb={5}
+                gap={2}
+                mx={2}
+                maxW="1250px"
+              >
+                {tokensForSale.map((item) => (
+                  <SingleNft
+                    tokenId={item}
+                    key={item}
+                    isMarketplace={isMarketplace}
+                  />
+                ))}
+              </SimpleGrid>
+            )}
           </Center>
           <Center mb={2} mt={-2}>
             <PaginationButtons
@@ -225,7 +243,7 @@ const FilteringOptions = ({
     <Container maxWidth="1250px">
       <Flex>
         <Spacer />
-        <RarityFilter sortBy={sortBy} setSort={setSort} />
+        <RarityFilter sortBy={sortBy} setSort={setSort} owned={owned} />
         <LtoH
           pricingFilter={pricingFilter}
           setPricingFilter={setPricingFilter}
@@ -237,7 +255,7 @@ const FilteringOptions = ({
   );
 };
 
-const RarityFilter = ({ sortBy, setSort }) => {
+const RarityFilter = ({ sortBy, setSort, owned }) => {
   return (
     <Menu>
       <MenuButton
@@ -246,6 +264,7 @@ const RarityFilter = ({ sortBy, setSort }) => {
         as={Button}
         boxShadow="base"
         bg={useColorModeValue("white", "whiteAlpha.100")}
+        isDisabled={owned}
       >
         {sortBy}
       </MenuButton>

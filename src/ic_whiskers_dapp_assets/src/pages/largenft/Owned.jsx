@@ -66,7 +66,6 @@ const Owned = ({ tokenId }) => {
 
   useEffect(() => {
     fetchOwned();
-    return () => {};
   }, []);
 
   // change to !loadComponent

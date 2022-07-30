@@ -27,7 +27,6 @@ import {
   useAnvilSelector,
   nft_purchase,
 } from "@vvv-interactive/nftanvil-react";
-import { useNavigate } from "react-router-dom";
 import {
   SendingToast,
   SuccessToast,

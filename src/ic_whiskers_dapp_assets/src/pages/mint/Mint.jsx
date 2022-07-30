@@ -1,40 +1,40 @@
-import React from "react";
-import { Box, Stack, HStack, Heading, Text, VStack } from "@chakra-ui/react";
+import React, { useEffect } from "react";
+import {
+  Box,
+  Stack,
+  HStack,
+  Heading,
+  Text,
+  VStack,
+  Flex,
+  Image as ChakraImage,
+} from "@chakra-ui/react";
+import { e8sToIcp } from "@vvv-interactive/nftanvil-tools/cjs/accountidentifier.js";
+import icLogo from "../../../assets/ic-logo.png";
 import Purchase from "./Purchase";
 import ProgressStats from "./Progress";
 import Airdrop from "./Airdrop";
 
 const mintOption1 = {
-  amount: 100000000,
+  amount: 300000000,
   nfts: 1,
 };
 
 const mintOption2 = {
-  amount: 1000000000,
+  amount: 2969000000,
   nfts: 10,
 };
 
 const mintOption3 = {
-  amount: 500000000,
+  amount: 1469000000,
   nfts: 5,
 };
 
-function PriceWrapper({ children }) {
-  return (
-    <Box
-      mb={4}
-      shadow="base"
-      borderWidth="1px"
-      alignSelf={{ base: "center", lg: "flex-start" }}
-      borderColor={"gray.300"}
-      borderRadius={"xl"}
-    >
-      {children}
-    </Box>
-  );
-}
-
 const Mint = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <>
       <Box pt={12}>
@@ -50,27 +50,6 @@ const Mint = () => {
           spacing={{ base: 4, lg: 10 }}
           py={10}
         >
-          <PriceWrapper>
-            <Box py={4} px={12}>
-              <Text fontWeight="500" fontSize="2xl">
-                Fan
-              </Text>
-              <HStack justifyContent="center">
-                <Text fontSize="5xl" fontWeight="900">
-                  1
-                </Text>
-                <Text fontSize="3xl" color="gray.500">
-                  NFT
-                </Text>
-              </HStack>
-            </Box>
-            <VStack bg={"gray.50"} py={4} borderBottomRadius={"xl"}>
-              <Box w="80%" pt={2}>
-                <Purchase nfts={mintOption1.nfts} amount={mintOption1.amount} />
-              </Box>
-            </VStack>
-          </PriceWrapper>
-
           <PriceWrapper>
             <Box position="relative">
               <Box
@@ -89,27 +68,34 @@ const Mint = () => {
                   fontWeight="600"
                   rounded="xl"
                 >
-                  Most Popular
+                  Popular
                 </Text>
               </Box>
               <Box py={4} px={12}>
                 <Text fontWeight="500" fontSize="2xl">
-                  Legendary Supporter
+                  Smol Cat
                 </Text>
                 <HStack justifyContent="center">
                   <Text fontSize="5xl" fontWeight="900">
-                    10
+                    1
                   </Text>
                   <Text fontSize="3xl" color="gray.500">
-                    NFTs
+                    NFT
                   </Text>
                 </HStack>
               </Box>
               <VStack bg={"gray.50"} py={4} borderBottomRadius={"xl"}>
+                <Flex align="center">
+                  <ChakraImage src={icLogo} h={"25px"} w={"auto"} />
+                  &nbsp;
+                  <Text as="kbd" color={"#414141"} fontSize={"2xl"}>
+                    {e8sToIcp(mintOption1.amount)}
+                  </Text>
+                </Flex>
                 <Box w="80%" pt={2}>
                   <Purchase
-                    nfts={mintOption2.nfts}
-                    amount={mintOption2.amount}
+                    nfts={mintOption1.nfts}
+                    amount={mintOption1.amount}
                   />
                 </Box>
               </VStack>
@@ -119,7 +105,35 @@ const Mint = () => {
           <PriceWrapper>
             <Box py={4} px={12}>
               <Text fontWeight="500" fontSize="2xl">
-                Super Fan
+                Chad
+              </Text>
+              <HStack justifyContent="center">
+                <Text fontSize="5xl" fontWeight="900">
+                  10
+                </Text>
+                <Text fontSize="3xl" color="gray.500">
+                  NFTs
+                </Text>
+              </HStack>
+            </Box>
+            <VStack bg={"gray.50"} py={4} borderBottomRadius={"xl"}>
+              <Flex align="center">
+                <ChakraImage src={icLogo} h={"25px"} w={"auto"} />
+                &nbsp;
+                <Text as="kbd" color={"#414141"} fontSize={"2xl"}>
+                  {e8sToIcp(mintOption2.amount)}
+                </Text>
+              </Flex>
+              <Box w="80%" pt={2}>
+                <Purchase nfts={mintOption2.nfts} amount={mintOption2.amount} />
+              </Box>
+            </VStack>
+          </PriceWrapper>
+
+          <PriceWrapper>
+            <Box py={4} px={12}>
+              <Text fontWeight="500" fontSize="2xl">
+                Degen
               </Text>
               <HStack justifyContent="center">
                 <Text fontSize="5xl" fontWeight="900">
@@ -131,6 +145,13 @@ const Mint = () => {
               </HStack>
             </Box>
             <VStack bg={"gray.50"} py={4} borderBottomRadius={"xl"}>
+              <Flex align="center">
+                <ChakraImage src={icLogo} h={"25px"} w={"auto"} />
+                &nbsp;
+                <Text as="kbd" color={"#414141"} fontSize={"2xl"}>
+                  {e8sToIcp(mintOption3.amount)}
+                </Text>
+              </Flex>
               <Box w="80%" pt={2}>
                 <Purchase nfts={mintOption3.nfts} amount={mintOption3.amount} />
               </Box>
@@ -143,5 +164,20 @@ const Mint = () => {
     </>
   );
 };
+
+function PriceWrapper({ children }) {
+  return (
+    <Box
+      mb={4}
+      shadow="base"
+      borderWidth="1px"
+      alignSelf={{ base: "center", lg: "flex-start" }}
+      borderColor={"gray.300"}
+      borderRadius={"xl"}
+    >
+      {children}
+    </Box>
+  );
+}
 
 export default Mint;

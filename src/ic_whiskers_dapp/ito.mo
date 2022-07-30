@@ -1,22 +1,23 @@
-import Nft "mo:anvil/type/nft_interface";
-import Result "mo:base/Result";
-import Text "mo:base/Text";
-import Principal "mo:base/Principal";
+import Array "mo:base/Array";
+import Blob "mo:base/Blob";
+import Int "mo:base/Int";
 import Iter "mo:base/Iter";
 import Nat32 "mo:base/Nat32";
-import Random "mo:base/Random";
-import Int "mo:base/Int";
-import Blob "mo:base/Blob";
-import Array "mo:base/Array";
-import Cluster  "mo:anvil/type/Cluster";
-import SHA224 "mo:anvil/lib/SHA224";
-import Time "mo:base/Time";
 import Nat64 "mo:base/Nat64";
+import Principal "mo:base/Principal";
+import Random "mo:base/Random";
+import Result "mo:base/Result";
+import Text "mo:base/Text";
+import Time "mo:base/Time";
+
+import Anvil "mo:anvil/base/Anvil";
+import Cluster  "mo:anvil/type/Cluster";
+import Nft "mo:anvil/type/nft_interface";
+import PseudoRandom "mo:anvil/lib/PseudoRandom";
+import SHA224 "mo:anvil/lib/SHA224";
+import TrieRecord "mo:anvil/lib/TrieRecord";
 
 import IF "./ito_interface";
-import Anvil "mo:anvil/base/Anvil";
-import TrieRecord "mo:anvil/lib/TrieRecord";
-import PseudoRandom "mo:anvil/lib/PseudoRandom";
 
 // Contract #1
 // Initial Token Offering contract using Anvil protocol
@@ -312,7 +313,7 @@ shared({caller = _installer}) actor class Class() : async IF.Interface = this {
                 };
               };
               // pricing option two
-              case (1200000000) {
+              case (1469000000) {
                 switch(use(tx_id)) {
                   case (#ok()) {
                     switch(give(from, 5, #buy)) {
@@ -328,7 +329,7 @@ shared({caller = _installer}) actor class Class() : async IF.Interface = this {
                 };
               };
               // pricing option three
-              case (2100000000) {
+              case (2969000000) {
                 switch(use(tx_id)) {
                   case (#ok()) {
                     switch(give(from, 10, #buy)) { 
