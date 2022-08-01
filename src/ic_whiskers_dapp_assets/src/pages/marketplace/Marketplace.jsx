@@ -13,7 +13,6 @@ import {
   Flex,
   Spacer,
   Container,
-  useColorModeValue,
   FormControl,
   Switch,
   FormLabel,
@@ -29,11 +28,11 @@ import {
   useAnvilSelector,
 } from "@vvv-interactive/nftanvil-react";
 
-// const address =
-//   "a004f41ea1a46f5b7e9e9639fbed84e037d9ce66b75d392d2c1640bb7a559cda"; // this is badbot address
+const MintingAddress =
+  "a004f41ea1a46f5b7e9e9639fbed84e037d9ce66b75d392d2c1640bb7a559cda"; // this is badbot address
 
-const address =
-  "a00bdc022680e6769e088e7203e14280334b54a680e4eb3855c1a656960c6d27"; // IC whiskers address
+// const address =
+//   "a00bdc022680e6769e088e7203e14280334b54a680e4eb3855c1a656960c6d27"; // IC whiskers address
 
 const Marketplace = () => {
   const anvilDispatch = useAnvilDispatch();
@@ -45,6 +44,7 @@ const Marketplace = () => {
   const [pricingFilter, setPricingFilter] = useState("Low to High");
   const [owned, setOwned] = useState(false);
   const [isMarketplace, setIsMarketplace] = useState(true);
+  const address = useAnvilSelector((state) => state.user.address);
 
   // author fetch - only runs if author changes
   const fetchAuthorData = async () => {
@@ -54,7 +54,7 @@ const Marketplace = () => {
       (async () => {
         try {
           meta = await fetch(
-            "https://nftpkg.com/api/v1/author/" + address
+            "https://nftpkg.com/api/v1/author/" + MintingAddress
           ).then((x) => x.json());
         } catch (e) {
           FailedToast("Failed", "Error fetching author data");
@@ -63,7 +63,7 @@ const Marketplace = () => {
       (async () => {
         try {
           prices = await fetch(
-            "https://nftpkg.com/api/v1/prices/" + address
+            "https://nftpkg.com/api/v1/prices/" + MintingAddress
           ).then((x) => x.json());
         } catch (e) {
           FailedToast("Failed", "Error fetching author data");
@@ -142,9 +142,9 @@ const Marketplace = () => {
         prices.sort((a, b) => b[2] - a[2]);
       }
 
-      for (let i = 0; i < prices.length; i++) {
-        if (prices[i][2] > 0) {
-          forSale.push(prices[i][0]);
+      for (let tokenPrice of prices) {
+        if (tokenPrice[2] > 0) {
+          forSale.push(tokenPrice[0]);
         }
       }
       if (sortBy === "0") {
@@ -163,7 +163,9 @@ const Marketplace = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
     fetchAuthorData();
-    anvilDispatch(Claim());
+    if (address) {
+      anvilDispatch(Claim());
+    }
   }, []);
 
   return (
@@ -186,34 +188,34 @@ const Marketplace = () => {
             />
           </Center>
           <Center mt={1}>
-            {isMarketplace ? (
+            {/* {isMarketplace ? (
               <Kbd
                 my={"195px"}
                 border={"2px"}
                 borderColor={"#e5e8eb"}
                 as={Button}
                 boxShadow="base"
-                bg={useColorModeValue("white", "whiteAlpha.100")}
+                bg={"white"}
               >
                 <Text color="#000">Marketplace opening soon!🚀 🛍</Text>
               </Kbd>
-            ) : (
-              <SimpleGrid
-                columns={{ base: 2, md: 2, lg: 4 }}
-                pb={5}
-                gap={2}
-                mx={2}
-                maxW="1250px"
-              >
-                {tokensForSale.map((item) => (
-                  <SingleNft
-                    tokenId={item}
-                    key={item}
-                    isMarketplace={isMarketplace}
-                  />
-                ))}
-              </SimpleGrid>
-            )}
+            ) : ( */}
+            <SimpleGrid
+              columns={{ base: 2, md: 2, lg: 4 }}
+              pb={5}
+              gap={2}
+              mx={2}
+              maxW="1250px"
+            >
+              {tokensForSale.map((item) => (
+                <SingleNft
+                  tokenId={item}
+                  key={item}
+                  isMarketplace={isMarketplace}
+                />
+              ))}
+            </SimpleGrid>
+            {/* )} */}
           </Center>
           <Center mb={2} mt={-2}>
             <PaginationButtons
@@ -263,7 +265,7 @@ const RarityFilter = ({ sortBy, setSort, owned }) => {
         borderColor={"#e5e8eb"}
         as={Button}
         boxShadow="base"
-        bg={useColorModeValue("white", "whiteAlpha.100")}
+        bg={"white"}
         isDisabled={owned}
       >
         {sortBy}
@@ -315,7 +317,7 @@ const LtoH = ({ pricingFilter, setPricingFilter, owned }) => {
         borderColor={"#e5e8eb"}
         as={Button}
         boxShadow="base"
-        bg={useColorModeValue("white", "whiteAlpha.100")}
+        bg={"white"}
         isDisabled={owned}
       >
         {pricingFilter}
@@ -353,7 +355,7 @@ const PaginationButtons = ({ setPage, page, tokensLength }) => {
         border={"2px"}
         borderColor={"#e5e8eb"}
         boxShadow="base"
-        bg={useColorModeValue("white", "whiteAlpha.100")}
+        bg={"white"}
         _hover={{ opacity: "0.8" }}
         isDisabled={page === 0}
         onClick={() => {
@@ -367,7 +369,7 @@ const PaginationButtons = ({ setPage, page, tokensLength }) => {
         border={"2px"}
         borderColor={"#e5e8eb"}
         boxShadow="base"
-        bg={useColorModeValue("white", "whiteAlpha.100")}
+        bg={"white"}
         px={6}
         _hover={{ opacity: "0.8" }}
         isDisabled={tokensLength < 12}
