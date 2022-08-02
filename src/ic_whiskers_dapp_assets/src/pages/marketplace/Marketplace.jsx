@@ -169,7 +169,7 @@ const Marketplace = () => {
   }, []);
 
   return (
-    <div>
+    <Box bgGradient={"linear(to-b, whiteAlpha.900, transparent)"}>
       <FilteringOptions
         pricingFilter={pricingFilter}
         setPricingFilter={setPricingFilter}
@@ -228,7 +228,7 @@ const Marketplace = () => {
       ) : (
         <p>loading...</p>
       )}
-    </div>
+    </Box>
   );
 };
 
@@ -242,7 +242,7 @@ const FilteringOptions = ({
   setOwned,
 }) => {
   return (
-    <Container maxWidth="1250px">
+    <Container maxWidth="1250px" p={4}>
       <Flex>
         <Spacer />
         <RarityFilter sortBy={sortBy} setSort={setSort} owned={owned} />

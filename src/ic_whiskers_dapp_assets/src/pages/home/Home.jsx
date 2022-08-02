@@ -4,72 +4,97 @@ import {
   Stack,
   Button,
   Text,
-  VStack,
-  useBreakpointValue,
   Heading,
+  Container,
+  Box,
 } from "@chakra-ui/react";
-import bg from "../../../assets/whiskers_bg.png";
+import bg from "../../../assets/ic_whiskersBG.png";
+import logo from "../../../assets/whiskers_logo.jpg";
+import catLogo from "../../../assets/cat_logo.png";
 import { GiCat } from "react-icons/gi";
+import { NavLink } from "react-router-dom";
+import IcWhiskerCard from "./IcWhiskerCard";
+import Gallery from "./Gallery";
+import About from "./About";
 
 const Home = () => {
   return (
     <Flex
       w={"full"}
-      h={"85vh"}
-      // backgroundImage={bg}
-      // backgroundSize={"cover"}
-      // backgroundPosition={"center center"}
+      h={"100%"}
+      backgroundImage={bg}
+      backgroundSize={"cover"}
+      backgroundPosition={"center center"}
     >
-      <VStack
-        w={"full"}
-        justify={"center"}
-        px={useBreakpointValue({ base: 4, md: 8 })}
-        // bgGradient={"linear(to-r, blackAlpha.600, transparent)"}
+      <Box
+        w="full"
+        bgGradient={"linear(to right bottom, whiteAlpha.900, transparent)"}
       >
-        <Stack maxW={"2xl"} align={"flex-start"} spacing={6}>
-          <Text
-            color={"black"}
-            fontWeight={700}
-            lineHeight={1.2}
-            fontSize={useBreakpointValue({ base: "3xl", md: "4xl" })}
-          >
-            Mint, Collect and Trade
-          </Text>
+        <HomeBanner />
+        <Gallery />
+        <About />
+      </Box>
+    </Flex>
+  );
+};
+
+const HomeBanner = () => {
+  return (
+    <Container maxW={"7xl"} px={20}>
+      <Stack
+        align={"center"}
+        spacing={{ base: 8, md: 10 }}
+        py={{ base: 20, md: 28 }}
+        direction={{ base: "column", md: "row" }}
+      >
+        <Stack flex={1} spacing={{ base: 5, md: 5 }}>
           <Heading
-            bgGradient="linear(to-t, #f953c6, #b91d73)"
-            bgClip="text"
-            fontSize={useBreakpointValue({ base: "5xl", md: "6xl" })}
+            lineHeight={1.1}
+            fontWeight={"bold"}
+            fontSize={{ base: "3xl", sm: "4xl", lg: "6xl" }}
           >
-            IC Whiskers
+            Mint, Collect and Trade IC Whisker NFTs
           </Heading>
-          <Stack direction={"row"}>
-            <Button
-              size={useBreakpointValue(["sm", "lg"])}
-              fontSize={{ base: "sm", sm: "sm", md: "md" }}
-              rounded={"full"}
-              color={"white"}
-              bgGradient="linear(to-r, #c61682, #ec63d6)"
-              _hover={{ opacity: "0.8", transform: "scale(1.05)" }}
-              leftIcon={<GiCat />}
-            >
-              Mint ICWhisker
-            </Button>
-            <Button
-              size={useBreakpointValue(["sm", "lg"])}
-              fontSize={{ base: "sm", sm: "sm", md: "md" }}
-              fontWeight={"bold"}
-              rounded={"full"}
-              color={"white"}
-              bgGradient="linear(to-r, #c61682, #ec63d6)"
-              _hover={{ opacity: "0.8", transform: "scale(1.05)" }}
-              leftIcon={<GiCat />}
-            >
-              Trade ICWhisker
-            </Button>
+          <Text color={"blackAlpha"} fontSize={{ base: "xl", md: "4xl" }}>
+            A timeless set of hand drawn NFTs released by IC Whiskers
+          </Text>
+          <Stack spacing={{ base: 4, sm: 6 }} direction={"row"}>
+            <NavLink to={"/mint"}>
+              <Button
+                bg="pink.400"
+                color="white"
+                size={"lg"}
+                colorScheme="pink.400"
+                _hover={{
+                  transform: "translateY(-2px)",
+                  boxShadow: "lg",
+                }}
+                rightIcon={<GiCat />}
+              >
+                Collect
+              </Button>
+            </NavLink>
+            <NavLink to={"/marketplace"}>
+              <Button
+                bg="white"
+                boxShadow="base"
+                color="pink.400"
+                size={"lg"}
+                colorScheme="pink.400"
+                _hover={{
+                  transform: "translateY(-2px)",
+                  boxShadow: "lg",
+                }}
+                rightIcon={<GiCat />}
+              >
+                Trade
+              </Button>
+            </NavLink>
           </Stack>
         </Stack>
-      </VStack>
-    </Flex>
+        <IcWhiskerCard mainImg={logo} logoImg={catLogo} show={true} />
+      </Stack>
+    </Container>
   );
 };
 

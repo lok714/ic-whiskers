@@ -1,14 +1,9 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Home, Mint, Marketplace, LargeNft } from "./pages";
 import { SideBar, TopNav } from "./components/index";
-import {
-  Box,
-  useColorModeValue,
-  Drawer,
-  DrawerContent,
-  useDisclosure,
-} from "@chakra-ui/react";
+import { Box, Drawer, DrawerContent, useDisclosure } from "@chakra-ui/react";
+import bg from "../assets/ic_whiskersBG.png";
 import { useAnvilSelector } from "@vvv-interactive/nftanvil-react";
 
 const App = () => {
@@ -38,7 +33,7 @@ const App = () => {
           </DrawerContent>
         </Drawer>
         <TopNav onOpen={onOpen} />
-        <Box ml={{ base: 0, md: 60 }} p="4">
+        <Box ml={{ base: 0, md: 60 }}>
           {/* ALL main content goes here: react router links */}
           <Routes>
             <Route path="/" element={<Home />} />
